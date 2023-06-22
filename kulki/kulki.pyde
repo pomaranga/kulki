@@ -1,5 +1,19 @@
-import random  #karolina
+import random
 
+class Kulki:
+    def __init__(self, x, y, radius, color):
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.color = color
+        
+    def display(self):
+        stroke(255, 255, 255)
+        strokeWeight(2)  
+        smooth() 
+        fill(self.color)
+        ellipse(width/2, self.y, self.radius, self.radius)
+    
 def randomowy_kolor():
     kolory = [
         color(255, 0, 0),
@@ -11,17 +25,17 @@ def randomowy_kolor():
     ]
     return random.choice(kolory)
 
+def mousePressed():
+    kolor_kulki = randomowy_kolor()
+    kulka.color = kolor_kulki
+
 def setup():
+    global kulka
     size(800, 600)
     kolor_kulki = randomowy_kolor()
-    fill(kolor_kulki)
+    kulka = Kulki(200, 200, 30, kolor_kulki)
 
 def draw():
-    ellipse(width/2, height-45, 45, 45)
-    stroke(255, 255, 255)
-    strokeWeight(2)  
-    smooth()    
-
-def mousePressed():  #to jest tymczasowe, potem można to zmienić na jakiś inny warunek
-    kolor_kulki = randomowy_kolor()
-    fill(kolor_kulki)
+    kulka.display()
+    
+setup() #prosze niech ktoś poprawi jej pozycje xd

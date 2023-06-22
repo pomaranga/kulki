@@ -33,10 +33,10 @@ def setup():
     global kulka
     size(800, 600)
     kolor_kulki = randomowy_kolor()
-    kulka = Kulki(400, 550, 50, kolor_kulki)
+    strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
 
 
 def draw():
-    kulka.display()
+    strzala_kulka.display()
     
 setup()

@@ -26,8 +26,8 @@ def randomowy_kolor():
     return random.choice(kolory)
 
 def mousePressed():
-    kolor_kulki = randomowy_kolor()
-    strzala_kulka.color = kolor_kulki
+    color = randomowy_kolor()
+    strzala_kulka.color = color
 
 def setup():
     global strzala_kulka
@@ -39,5 +39,6 @@ def setup():
 def draw():
     global strzala_kulka
     strzala_kulka.display()
+
     
 setup()

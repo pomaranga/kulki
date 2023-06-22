@@ -12,7 +12,7 @@ class Kulki:
         strokeWeight(2)  
         smooth() 
         fill(self.color)
-        ellipse(self.x, self.y, self.radius, self.radius) #ten width trzeba zmienić, ale też nie wiem jak :(
+        ellipse(self.x, self.y, self.radius, self.radius) 
     
 def randomowy_kolor():
     kolory = [

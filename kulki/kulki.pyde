@@ -60,13 +60,14 @@ def mousePressed():
     strzala_kulka.color = randomowy_kolor()  # Zmiana koloru kulki na dole
 
 def setup():
-    global strzala_kulka
+    global strzala_kulka, strzalka
     size(800, 600)
     kolor_kulki = randomowy_kolor()
     strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
+    strzalka = loadImage("strzalka.png")
 
 def draw():
-    global strzala_kulka
+    global strzala_kulka, strzalka
     background(200)
         
     for p in pociski:
@@ -76,3 +77,13 @@ def draw():
             pociski.remove(p)
     
     strzala_kulka.display()
+    #Konrad - dodanie strzalki
+    kierunek = PVector(mouseX - strzala_kulka.x, mouseY - strzala_kulka.y) #tworzy wektor ktory okresla roznice miedzy pozycja myszki a kulki
+    kierunek.normalize() #skaluje wektor
+    pushMatrix()
+    translate(strzala_kulka.x, strzala_kulka.y) #przesuwa "srodek" do pozycji kulki
+    rotate(kierunek.heading())  # Obrót strzalki w kierunku wektora
+    translate(60, 3) #zmiana punktu obrotu obrazka
+    imageMode(CENTER)
+    image(strzalka, 0, 0)
+    popMatrix()

@@ -29,12 +29,18 @@ def randomowy_kolor():
     return random.choice(kolory)
 
 class Pocisk(Kulki):
-    def __init__(self, x, y, radius, color):
+    def __init__(self, x, y, radius, color, target_x, target_y):
         Kulki.__init__(self, x, y, radius, color)
-        self.speed = 5  # predkosc pocisku, mozna zmienic jesli trzeba
+        self.speed = 5  # predkosc pocisku, mozna zmienic jesli trzeba 
+        dx = target_x - x # Adrian - oblicza różnicę w pozycji x między celem (miejsce, do którego chcemy skierować pocisk) a obecną pozycją pocisku
+        dy = target_y - y # to samo co powyżej, ale dla osi y
+        mag = sqrt(dx*dx + dy*dy) # oblicza długość wektora od obecnej pozycji pocisku do celu
+        self.vx = self.speed * dx / mag # oblicza składową x prędkości pocisku
+        self.vy = self.speed * dy / mag # to samo tylko dla y
     
-    def move(self): # na razie tylko w górę leci
-        self.y -= self.speed
+    def move(self): 
+        self.x += self.vx
+        self.y += self.vy
     
     def wylecial(self): # sprawdzenie czy pocisk wylecial poza ekran
         return 
@@ -49,7 +55,7 @@ class Pocisk(Kulki):
 def mousePressed():
     global strzala_kulka
     color = strzala_kulka.color  # Pobieramy kolor z kulki na dole zeby pocisk mial ten sam kolor
-    pocisk_tymczasowy = Pocisk(strzala_kulka.x, strzala_kulka.y, strzala_kulka.radius, color)
+    pocisk_tymczasowy = Pocisk(strzala_kulka.x, strzala_kulka.y, strzala_kulka.radius, color, mouseX, mouseY)
     pociski.append(pocisk_tymczasowy)
     strzala_kulka.color = randomowy_kolor()  # Zmiana koloru kulki na dole
 

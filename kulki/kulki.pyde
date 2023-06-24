@@ -31,18 +31,19 @@ def randomowy_kolor():
 
 def generuj_kulki():
     kuleczki = []
-    liczba_kolumn = 10
+    liczba_kolumn = 15
     liczba_rzedow = 5
     
-    x_start = 100
-    y_start = 20
     rozmiar_kulki = 50
-    przesuniecie = rozmiar_kulki / 2
+    margines = rozmiar_kulki
+    szerokosc_rzedu = width - 2 * margines
+    odstep_miedzy_kulkami = szerokosc_rzedu / (liczba_kolumn - 1)
+    przesuniecie = odstep_miedzy_kulkami / 2
     
     for rzad in range(liczba_rzedow):
-        for kolumna in range(liczba_kolumn - rzad):
-            x = x_start + kolumna * (rozmiar_kulki + 20) + rzad * przesuniecie
-            y = y_start + rzad *(rozmiar_kulki + 20)
+        for kolumna in range(liczba_kolumn - rzad % 2):
+            x = kolumna * odstep_miedzy_kulkami + rzad % 2 * przesuniecie + margines
+            y = rzad * odstep_miedzy_kulkami + margines
             losowy_kolor = randomowy_kolor()
             kulka = Kulki(x, y, rozmiar_kulki, losowy_kolor)
             kuleczki.append(kulka)

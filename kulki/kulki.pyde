@@ -11,6 +11,7 @@ kolory = [
 
 pociski = []
 
+
 class Kulki:
     def __init__(self, x, y, radius, color):
         self.x = x
@@ -27,6 +28,24 @@ class Kulki:
     
 def randomowy_kolor():
     return random.choice(kolory)
+
+def generuj_kulki():
+    kuleczki = []
+    liczba_kolumn = 8
+    liczba_rzedow = 5
+    
+    x_start = 100
+    y_start = 100
+    rozmiar_kulki = 50
+    
+    for rzad in range(liczba_rzedow):
+        for kolumna in range(liczba_kolumn):
+            x = x_start + kolumna * (rozmiar_kulki + 20)
+            y = y_start + rzad *(rozmiar_kulki + 20)
+            losowy_kolor = randomowy_kolor()
+            kulka = Kulki(x, y, rozmiar_kulki, losowy_kolor)
+            kuleczki.append(kulka)
+    return kuleczki
 
 class Pocisk(Kulki):
     def __init__(self, x, y, radius, color, target_x, target_y):
@@ -63,15 +82,19 @@ def mousePressed():
     strzala_kulka.color = randomowy_kolor()  # Zmiana koloru kulki na dole
 
 def setup():
-    global strzala_kulka, strzalka
+    global strzala_kulka, strzalka, kulki_na_gorze
     size(800, 600)
     kolor_kulki = randomowy_kolor()
     strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
     strzalka = loadImage("strzalka.png")
+    kulki_na_gorze = generuj_kulki()
 
 def draw():
-    global strzala_kulka, strzalka
+    global strzala_kulka, strzalka, kulki_na_gorze
     background(200)
+    
+    for kula in kulki_na_gorze:
+        kula.display()
         
     for p in pociski:
         p.move()

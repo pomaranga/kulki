@@ -31,7 +31,7 @@ def randomowy_kolor():
 class Pocisk(Kulki):
     def __init__(self, x, y, radius, color, target_x, target_y):
         Kulki.__init__(self, x, y, radius, color)
-        self.speed = 5  # predkosc pocisku, mozna zmienic jesli trzeba 
+        self.speed = 10  # predkosc pocisku, mozna zmienic jesli trzeba 
         dx = target_x - x # Adrian - oblicza różnicę w pozycji x między celem (miejsce, do którego chcemy skierować pocisk) a obecną pozycją pocisku
         dy = target_y - y # to samo co powyżej, ale dla osi y
         mag = sqrt(dx*dx + dy*dy) # oblicza długość wektora od obecnej pozycji pocisku do celu
@@ -41,6 +41,9 @@ class Pocisk(Kulki):
     def move(self): 
         self.x += self.vx
         self.y += self.vy
+        
+        if self.x - self.radius < 0 or self.x + self.radius > width:
+            self.vx *= -1  #odbijanie posicku od ścianki (prawa i lewa) 
     
     def wylecial(self): # sprawdzenie czy pocisk wylecial poza ekran
         return 

@@ -10,6 +10,7 @@ kolory = [
     ]
 
 pociski = []
+nastepny_kolor = None
 
 
 class Kulki:
@@ -77,22 +78,24 @@ class Pocisk(Kulki):
     
 
 def mousePressed():
-    global strzala_kulka
+    global strzala_kulka, nastepny_kolor
     color = strzala_kulka.color  # Pobieramy kolor z kulki na dole zeby pocisk mial ten sam kolor
     pocisk_tymczasowy = Pocisk(strzala_kulka.x, strzala_kulka.y, strzala_kulka.radius, color, mouseX, mouseY)
     pociski.append(pocisk_tymczasowy)
-    strzala_kulka.color = randomowy_kolor()  # Zmiana koloru kulki na dole
+    strzala_kulka.color = nastepny_kolor  
+    nastepny_kolor = randomowy_kolor()
 
 def setup():
-    global strzala_kulka, strzalka, kulki_na_gorze
+    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
     size(800, 600)
     kolor_kulki = randomowy_kolor()
+    nastepny_kolor = randomowy_kolor()
     strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
     strzalka = loadImage("strzalka.png")
     kulki_na_gorze = generuj_kulki()
 
 def draw():
-    global strzala_kulka, strzalka, kulki_na_gorze
+    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
     background(200)
     
     for kula in kulki_na_gorze:
@@ -105,6 +108,11 @@ def draw():
             pociski.remove(p)
     
     strzala_kulka.display()
+    
+    # Adrian - Pokazanie koloru nastepnej kulki
+    fill(nastepny_kolor)
+    ellipse(50, height - 50, strzala_kulka.radius, strzala_kulka.radius)
+    
     #Konrad - dodanie strzalki
     kierunek = PVector(mouseX - strzala_kulka.x, mouseY - strzala_kulka.y) #tworzy wektor ktory okresla roznice miedzy pozycja myszki a kulki
     kierunek.normalize() #skaluje wektor

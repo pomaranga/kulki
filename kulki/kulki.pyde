@@ -1,3 +1,34 @@
+def start_screen():
+    background(0)  
+
+    # tytuł gry
+    textSize(80)
+    fill(255)
+    textAlign(CENTER)
+    text("Kulki", width/2, height/2 - 150)
+
+    # krótka instrukcja gry
+    textSize(24)
+    text("Instrukcja:", width/2, height/2 - 60)
+    text(" Strzelaj w kulki, ktore sa tego samego koloru co twoja. ", width/2, height/2)
+    text(" Pozbadz sie wszystkich aby wygrac. ", width/2, height/2 + 50)
+
+    # przycisk "start"
+    button_width = 150
+    button_height = 50
+    button_x = width/2 - button_width/2 + 75
+    button_y = height/2 + 200
+    rectMode(CENTER)
+    fill(0, 255, 0)  
+    rect(button_x, button_y, button_width, button_height)
+    fill(255)
+    textSize(24)
+    text("Start", button_x, button_y + 8)
+
+def setup():
+    size(800, 600)
+    start_screen()  
+    
 import random
 
 kolory = [

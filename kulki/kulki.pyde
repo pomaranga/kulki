@@ -25,9 +25,6 @@ def start_screen():
     textSize(24)
     text("Start", button_x, button_y + 8)
 
-def setup():
-    size(800, 600)
-    start_screen()  
     
 import random
 
@@ -117,6 +114,7 @@ def mousePressed():
     nastepny_kolor = randomowy_kolor()
 
 def setup():
+    start_screen()
     global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
     size(800, 600)
     kolor_kulki = randomowy_kolor()

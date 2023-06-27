@@ -121,7 +121,14 @@ def setup():
     strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
     strzalka = loadImage("strzalka.png")
     kulki_na_gorze = generuj_kulki()
-
+def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić jak coś
+    for kula in kuleczki:
+        for pocisk in pociski:
+            distance = dist(kula.x, kula.y, pocisk.x, pocisk.y)
+            if distance <= kula.radius / 2 + pocisk.radius / 2:
+                kuleczki.remove(kula)
+                pociski.remove(pocisk)
+                break
 def draw():
     global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
     background(200)
@@ -134,6 +141,8 @@ def draw():
         p.display()
         if p.wylecial():
             pociski.remove(p)
+            
+    sprawdz_kolizje(kulki_na_gorze, pociski)  # Sprawdzenie kolizji kulki-pociski
     
     strzala_kulka.display()
 

@@ -11,7 +11,7 @@ def start_screen():
     textSize(24)
     text("Instrukcja:", width/2, height/2 - 60)
     text(" Strzelaj w kulki, ktore sa tego samego koloru co twoja. ", width/2, height/2)
-    text(" Pozbadz sie wszystkich aby wygrac. ", width/2, height/2 + 50)
+    text(" Pozbadz sie wszystkich aby wygrac.", width/2, height/2 + 50)
 
     # przycisk "start"
     button_width = 150
@@ -25,7 +25,7 @@ def start_screen():
     textSize(24)
     text("Start", button_x, button_y + 8)
 
-    
+
 import random
 
 kolory = [
@@ -114,7 +114,6 @@ def mousePressed():
     nastepny_kolor = randomowy_kolor()
 
 def setup():
-    start_screen()
     global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
     size(800, 600)
     kolor_kulki = randomowy_kolor()
@@ -137,6 +136,7 @@ def draw():
             pociski.remove(p)
     
     strzala_kulka.display()
+
     
     # Adrian - Pokazanie koloru nastepnej kulki
     fill(nastepny_kolor)
@@ -152,3 +152,5 @@ def draw():
     imageMode(CENTER)
     image(strzalka, 0, 0)
     popMatrix()
+    
+    #start_screen() - jak się odkomentuje to wyświetlany jest ekran startowy

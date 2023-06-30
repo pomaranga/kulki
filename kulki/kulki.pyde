@@ -112,15 +112,7 @@ def mousePressed():
     pociski.append(pocisk_tymczasowy)
     strzala_kulka.color = nastepny_kolor  
     nastepny_kolor = randomowy_kolor()
-
-def setup():
-    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
-    size(800, 600)
-    kolor_kulki = randomowy_kolor()
-    nastepny_kolor = randomowy_kolor()
-    strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
-    strzalka = loadImage("strzalka.png")
-    kulki_na_gorze = generuj_kulki()
+'''
 def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić jak coś
     for kula in kuleczki:
         for pocisk in pociski:
@@ -129,10 +121,39 @@ def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić j
                 kuleczki.remove(kula)
                 pociski.remove(pocisk)
                 break
+'''
+def setup():
+    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
+    size(800, 600)
+    kolor_kulki = randomowy_kolor()
+    nastepny_kolor = randomowy_kolor()
+    strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
+    strzalka = loadImage("strzalka.png")
+    kulki_na_gorze = generuj_kulki()
+    
+def dodanie_kulki(kuleczki, pociski):
+    nowe_kuleczki = []
+    for kula in kuleczki:
+        for pocisk in pociski:
+            distance = dist(kula.x, kula.y, pocisk.x, pocisk.y)
+            if distance <= kula.radius:
+                if kula not in nowe_kuleczki:
+                    nowe_kuleczki.append(kula)
+                if distance !=0:
+                    pocisk.x=kula.x+kula.radius/2
+                    pocisk.y=kula.y+kula.radius
+                nowa_kula = Kulki(pocisk.x, pocisk.y, pocisk.radius, pocisk.color) # Tworzenie nowej kuleczki na podstawie pocisku
+                nowe_kuleczki.append(nowa_kula)
+                pociski.remove(pocisk)
+            
+                break
+        else:
+            nowe_kuleczki.append(kula)
+    kuleczki[:] = nowe_kuleczki
+
 def draw():
     global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
     background(200)
-    
     for kula in kulki_na_gorze:
         kula.display()
         
@@ -142,10 +163,9 @@ def draw():
         if p.wylecial():
             pociski.remove(p)
             
-    sprawdz_kolizje(kulki_na_gorze, pociski)  # Sprawdzenie kolizji kulki-pociski
-    
+    dodanie_kulki(kulki_na_gorze, pociski)  # Dodanie pocisku do kuleczek
     strzala_kulka.display()
-
+    #sprawdz_kolizje(kulki_na_gorze, pociski)  # Sprawdzenie kolizji kulki-pociski
     
     # Adrian - Pokazanie koloru nastepnej kulki
     fill(nastepny_kolor)
@@ -162,4 +182,3 @@ def draw():
     image(strzalka, 0, 0)
     popMatrix()
     
-    #start_screen() - jak się odkomentuje to wyświetlany jest ekran startowy

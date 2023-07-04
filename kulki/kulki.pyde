@@ -37,6 +37,18 @@ kolory = [
         color(255, 255, 0), 
     ]
 
+
+'''
+wartosci kolorow:
+   red =  -65536
+   green = -16711936
+   darkblue = -16776961
+   lightblue = -16711681
+   pink = -65281
+   yellow = -256
+'''
+
+
 pociski = []
 nastepny_kolor = None
 
@@ -59,7 +71,9 @@ def randomowy_kolor():
     return random.choice(kolory)
 
 def generuj_kulki():
+    global kulka, kuleczki, lista_kolorow, losowy_kolor
     kuleczki = []
+    lista_kolorow = []
     liczba_kolumn = 15
     liczba_rzedow = 5
     
@@ -75,6 +89,7 @@ def generuj_kulki():
             y = rzad * odstep_miedzy_kulkami + margines
             losowy_kolor = randomowy_kolor()
             kulka = Kulki(x, y, rozmiar_kulki, losowy_kolor)
+            lista_kolorow.append(kulka.color)
             kuleczki.append(kulka)
     return kuleczki
 
@@ -106,12 +121,13 @@ class Pocisk(Kulki):
     
 
 def mousePressed():
-    global strzala_kulka, nastepny_kolor
+    global strzala_kulka, nastepny_kolor, pocisk_tymczasowy
     color = strzala_kulka.color  # Pobieramy kolor z kulki na dole zeby pocisk mial ten sam kolor
     pocisk_tymczasowy = Pocisk(strzala_kulka.x, strzala_kulka.y, strzala_kulka.radius, color, mouseX, mouseY)
     pociski.append(pocisk_tymczasowy)
     strzala_kulka.color = nastepny_kolor  
     nastepny_kolor = randomowy_kolor()
+    print 'kolor nowego pocisku:', strzala_kulka.color
 '''
 def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić jak coś
     for kula in kuleczki:
@@ -123,19 +139,34 @@ def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić j
                 break
 '''
 def setup():
-    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
+    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor, przypisanie_kolorow
     size(800, 600)
     kolor_kulki = randomowy_kolor()
     nastepny_kolor = randomowy_kolor()
     strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
     strzalka = loadImage("strzalka.png")
     kulki_na_gorze = generuj_kulki()
-    
+    print 'kolor pocisku:', strzala_kulka.color
+
+    przypisanie_kolorow = [
+        {kulki_na_gorze[-1]: lista_kolorow[-1], kulki_na_gorze[-2]: lista_kolorow[-2], kulki_na_gorze[-3]: lista_kolorow[-3],
+        kulki_na_gorze[-4]: lista_kolorow[-4], kulki_na_gorze[-5]: lista_kolorow[-5], kulki_na_gorze[-6]: lista_kolorow[-6],
+        kulki_na_gorze[-7]: lista_kolorow[-7], kulki_na_gorze[-8]: lista_kolorow[-8], kulki_na_gorze[-9]: lista_kolorow[-9],
+        kulki_na_gorze[-10]: lista_kolorow[-10], kulki_na_gorze[-11]: lista_kolorow[-11], kulki_na_gorze[-12]: lista_kolorow[-12],
+        kulki_na_gorze[-13]: lista_kolorow[-13], kulki_na_gorze[-14]: lista_kolorow[-14], kulki_na_gorze[-15]: lista_kolorow[-15]}
+        ]   #itd.
+
+
 def dodanie_kulki(kuleczki, pociski):
     nowe_kuleczki = []
     for kula in kuleczki:
         for pocisk in pociski:
             distance = dist(kula.x, kula.y, pocisk.x, pocisk.y)
+            if distance <= kula.radius / 2 + pocisk.radius / 2:
+                if (przypisanie_kolorow[-1][kula]) == pocisk_tymczasowy.color:
+                    kuleczki.remove(kula)
+                if (przypisanie_kolorow[-1][kula]) != pocisk_tymczasowy.color: 
+                    kuleczki.append(pocisk)
             if distance <= kula.radius:
                 if kula not in nowe_kuleczki:
                     nowe_kuleczki.append(kula)
@@ -144,12 +175,14 @@ def dodanie_kulki(kuleczki, pociski):
                     pocisk.y=kula.y+kula.radius
                 nowa_kula = Kulki(pocisk.x, pocisk.y, pocisk.radius, pocisk.color) # Tworzenie nowej kuleczki na podstawie pocisku
                 nowe_kuleczki.append(nowa_kula)
+                #print 'kolor celu', (przypisanie_kolorow[-1][kula])
+                #print 'kolor wystrzelonej kulki', pocisk_tymczasowy.color
                 pociski.remove(pocisk)
             
                 break
-        else:
+'''        else:
             nowe_kuleczki.append(kula)
-    kuleczki[:] = nowe_kuleczki
+    kuleczki[:] = nowe_kuleczki          '''     #dodalam ''', aby dzialalo przypisanie_kolorow
 
 def draw():
     global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor

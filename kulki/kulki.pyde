@@ -23,8 +23,7 @@ def start_screen():
     rect(button_x, button_y, button_width, button_height)
     fill(255)
     textSize(24)
-    text("Start", button_x, button_y + 8)
-
+    text("Start", button_x, button_y + 8)    
 
 import random
 
@@ -69,6 +68,11 @@ class Kulki:
     
 def randomowy_kolor():
     return random.choice(kolory)
+# Natalia_A
+def licz_wynik(wynik):
+    wynik = wynik + 1
+    return wynik
+
 
 def generuj_kulki():
     global kulka, kuleczki, lista_kolorow, losowy_kolor
@@ -139,7 +143,12 @@ def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić j
                 break
 '''
 def setup():
-    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor, przypisanie_kolorow
+    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor, przypisanie_kolorow, wynik
+    # Natalia_A
+    wynik = 0 #N
+    global text_size #1N
+    text_size = 40 #2N
+    textSize(text_size) #3N
     size(800, 600)
     kolor_kulki = randomowy_kolor()
     nastepny_kolor = randomowy_kolor()
@@ -158,6 +167,7 @@ def setup():
 
 
 def dodanie_kulki(kuleczki, pociski):
+    global wynik
     nowe_kuleczki = []
     for kula in kuleczki:
         for pocisk in pociski:
@@ -165,6 +175,8 @@ def dodanie_kulki(kuleczki, pociski):
             if distance <= kula.radius / 2 + pocisk.radius / 2:
                 if (przypisanie_kolorow[-1][kula]) == pocisk_tymczasowy.color:
                     kuleczki.remove(kula)
+                    # Natalia_A 
+                    wynik = licz_wynik(wynik) # dodaje punkt kiedy zbijają się kulki (N)
                 if (przypisanie_kolorow[-1][kula]) != pocisk_tymczasowy.color: 
                     kuleczki.append(pocisk)
             if distance <= kula.radius:
@@ -195,10 +207,16 @@ def draw():
         p.display()
         if p.wylecial():
             pociski.remove(p)
-            
+
     dodanie_kulki(kulki_na_gorze, pociski)  # Dodanie pocisku do kuleczek
     strzala_kulka.display()
     #sprawdz_kolizje(kulki_na_gorze, pociski)  # Sprawdzenie kolizji kulki-pociski
+    
+    
+    # Natalia_A - Licznik punktów
+    fill(255) # kolor tekstu
+    textAlign(RIGHT, BOTTOM) # pozycja wyświetlania wyniku
+    text("Score: " + str(wynik), width, height) # wyświetlanie wyniku
     
     # Adrian - Pokazanie koloru nastepnej kulki
     fill(nastepny_kolor)

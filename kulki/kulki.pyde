@@ -121,6 +121,22 @@ class Pocisk(Kulki):
             self.y - self.radius > height
         )
     
+class Strzala: #Konrad - dodanie strzalki
+    def __init__(self, x, y, image):
+        self.pozycja = PVector(x, y)
+        self.image = image
+
+    def display(self, cel):
+        kierunek = PVector(cel.x - self.pozycja.x, cel.y - self.pozycja.y) #tworzy wektor ktory okresla roznice miedzy pozycja myszki a strzalki
+        kierunek.normalize() #skaluje wektor
+
+        pushMatrix()
+        translate(self.pozycja.x, self.pozycja.y) #przesuwa "srodek" do pozycji kulki
+        rotate(kierunek.heading())  # Obrót strzalki w kierunku wektora
+        translate(60, 3) #zmiana punktu obrotu obrazka
+        imageMode(CENTER)
+        image(self.image, 0, 0)
+        popMatrix()
 
 def mousePressed():
     global strzala_kulka, nastepny_kolor, pocisk_tymczasowy
@@ -141,7 +157,7 @@ def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić j
                 break
 '''
 def setup():
-    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor, wynik
+    global strzala_kulka, strzala, kulki_na_gorze, nastepny_kolor, wynik
     # Natalia_A
     wynik = 0 #N
     global text_size #1N
@@ -152,6 +168,7 @@ def setup():
     nastepny_kolor = randomowy_kolor()
     strzala_kulka = Kulki(400, 550, 50, kolor_kulki)
     strzalka = loadImage("strzalka.png")
+    strzala = Strzala(strzala_kulka.x, strzala_kulka.y, strzalka)
     kulki_na_gorze = generuj_kulki()
     print 'kolor pocisku:', strzala_kulka.color
 
@@ -213,7 +230,7 @@ def dodanie_kulki(kuleczki, pociski):
     kuleczki[:] = nowe_kuleczki          '''     #dodalam ''', aby dzialalo przypisanie_kolorow
 
 def draw():
-    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
+    global strzala_kulka, strzala, kulki_na_gorze, nastepny_kolor
     background(200)
     for kula in kulki_na_gorze:
         kula.display()
@@ -238,14 +255,5 @@ def draw():
     fill(nastepny_kolor)
     ellipse(50, height - 50, strzala_kulka.radius, strzala_kulka.radius)
     
-    #Konrad - dodanie strzalki
-    kierunek = PVector(mouseX - strzala_kulka.x, mouseY - strzala_kulka.y) #tworzy wektor ktory okresla roznice miedzy pozycja myszki a kulki
-    kierunek.normalize() #skaluje wektor
-    pushMatrix()
-    translate(strzala_kulka.x, strzala_kulka.y) #przesuwa "srodek" do pozycji kulki
-    rotate(kierunek.heading())  # Obrót strzalki w kierunku wektora
-    translate(60, 3) #zmiana punktu obrotu obrazka
-    imageMode(CENTER)
-    image(strzalka, 0, 0)
-    popMatrix()
-    
+    #Konrad - wyswietlenie strzalki
+    strzala.display(PVector(mouseX, mouseY))

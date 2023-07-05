@@ -157,13 +157,11 @@ def setup():
     kulki_na_gorze = generuj_kulki()
     print 'kolor pocisku:', strzala_kulka.color
 
-    przypisanie_kolorow = [
-        {kulki_na_gorze[-1]: lista_kolorow[-1], kulki_na_gorze[-2]: lista_kolorow[-2], kulki_na_gorze[-3]: lista_kolorow[-3],
-        kulki_na_gorze[-4]: lista_kolorow[-4], kulki_na_gorze[-5]: lista_kolorow[-5], kulki_na_gorze[-6]: lista_kolorow[-6],
-        kulki_na_gorze[-7]: lista_kolorow[-7], kulki_na_gorze[-8]: lista_kolorow[-8], kulki_na_gorze[-9]: lista_kolorow[-9],
-        kulki_na_gorze[-10]: lista_kolorow[-10], kulki_na_gorze[-11]: lista_kolorow[-11], kulki_na_gorze[-12]: lista_kolorow[-12],
-        kulki_na_gorze[-13]: lista_kolorow[-13], kulki_na_gorze[-14]: lista_kolorow[-14], kulki_na_gorze[-15]: lista_kolorow[-15]}
-        ]   #itd.
+
+    przypisanie_kolorow = {}
+    for kulka_na_gorze in kulki_na_gorze:
+        numer_miejsca = kulki_na_gorze.index(kulka_na_gorze)
+        przypisanie_kolorow[kulka_na_gorze] = lista_kolorow[numer_miejsca]
 
 
 def dodanie_kulki(kuleczki, pociski):
@@ -173,11 +171,11 @@ def dodanie_kulki(kuleczki, pociski):
         for pocisk in pociski:
             distance = dist(kula.x, kula.y, pocisk.x, pocisk.y)
             if distance <= kula.radius / 2 + pocisk.radius / 2:
-                if (przypisanie_kolorow[-1][kula]) == pocisk_tymczasowy.color:
+                if (przypisanie_kolorow[kula]) == pocisk_tymczasowy.color:
                     kuleczki.remove(kula)
                     # Natalia_A 
                     wynik = licz_wynik(wynik) # dodaje punkt kiedy zbijają się kulki (N)
-                if (przypisanie_kolorow[-1][kula]) != pocisk_tymczasowy.color: 
+                if (przypisanie_kolorow[kula]) != pocisk_tymczasowy.color:
                     kuleczki.append(pocisk)
             if distance <= kula.radius:
                 if kula not in nowe_kuleczki:

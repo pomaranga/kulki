@@ -167,16 +167,43 @@ def setup():
 def dodanie_kulki(kuleczki, pociski):
     global wynik
     nowe_kuleczki = []
+
+    kulki_do_sprawdzenia = [] 
+    kulki_juz_sprawdzone = [] 
+    kulki_do_znikniecia = []
+
     for kula in kuleczki:
         for pocisk in pociski:
             distance = dist(kula.x, kula.y, pocisk.x, pocisk.y)
             if distance <= kula.radius / 2 + pocisk.radius / 2:
                 if (przypisanie_kolorow[kula]) == pocisk_tymczasowy.color:
-                    kuleczki.remove(kula)
+
+                    #Julia - przerobione żeby znikały wszystkie sąsiednie kulki a nie tylko jedna
+                    kulki_do_sprawdzenia.append(kula) 
+
+                    for kula_bazowa in kulki_do_sprawdzenia:
+                        for kula_sprawdzana in kuleczki:
+                            if kula_sprawdzana not in kulki_juz_sprawdzone:
+                                
+                                if dist(kula_bazowa.x, kula_bazowa.y, kula_sprawdzana.x, kula_sprawdzana.y) < (kula_bazowa.radius / 2 + kula_sprawdzana.radius / 2)*1.5:
+                                    if kula_bazowa.color == kula_sprawdzana.color:
+                                        if kula_sprawdzana not in kulki_do_znikniecia:
+                                            kulki_do_znikniecia.append(kula_sprawdzana)
+                                            kulki_do_sprawdzenia.append(kula_sprawdzana)
+                                        
+                        kulki_juz_sprawdzone.append(kula_bazowa)
+                                
+                        
+                    for kulka_do_znikniecia in kulki_do_znikniecia:
+                        kuleczki.remove(kulka_do_znikniecia)
+
+                    
                     # Natalia_A 
                     wynik = licz_wynik(wynik) # dodaje punkt kiedy zbijają się kulki (N)
                 if (przypisanie_kolorow[kula]) != pocisk_tymczasowy.color:
                     kuleczki.append(pocisk)
+                    przypisanie_kolorow[pocisk] = pocisk.color     # uzupełnienie listy z kulkami na górze o pociski które nie zbiły innych kulek
+
             if distance <= kula.radius:
                 if kula not in nowe_kuleczki:
                     nowe_kuleczki.append(kula)

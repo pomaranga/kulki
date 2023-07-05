@@ -93,7 +93,6 @@ def generuj_kulki():
             y = rzad * odstep_miedzy_kulkami + margines
             losowy_kolor = randomowy_kolor()
             kulka = Kulki(x, y, rozmiar_kulki, losowy_kolor)
-            lista_kolorow.append(kulka.color)
             kuleczki.append(kulka)
     return kuleczki
 
@@ -158,12 +157,6 @@ def setup():
     print 'kolor pocisku:', strzala_kulka.color
 
 
-    przypisanie_kolorow = {}
-    for kulka_na_gorze in kulki_na_gorze:
-        numer_miejsca = kulki_na_gorze.index(kulka_na_gorze)
-        przypisanie_kolorow[kulka_na_gorze] = lista_kolorow[numer_miejsca]
-
-
 def dodanie_kulki(kuleczki, pociski):
     global wynik
     nowe_kuleczki = []
@@ -176,7 +169,7 @@ def dodanie_kulki(kuleczki, pociski):
         for pocisk in pociski:
             distance = dist(kula.x, kula.y, pocisk.x, pocisk.y)
             if distance <= kula.radius / 2 + pocisk.radius / 2:
-                if (przypisanie_kolorow[kula]) == pocisk_tymczasowy.color:
+                if kula.color == pocisk_tymczasowy.color:
 
                     #Julia - przerobione żeby znikały wszystkie sąsiednie kulki a nie tylko jedna
                     kulki_do_sprawdzenia.append(kula) 
@@ -200,10 +193,9 @@ def dodanie_kulki(kuleczki, pociski):
                     
                     # Natalia_A 
                     wynik = licz_wynik(wynik) # dodaje punkt kiedy zbijają się kulki (N)
-                if (przypisanie_kolorow[kula]) != pocisk_tymczasowy.color:
+                if kula.color != pocisk_tymczasowy.color:
                     kuleczki.append(pocisk)
-                    przypisanie_kolorow[pocisk] = pocisk.color     # uzupełnienie listy z kulkami na górze o pociski które nie zbiły innych kulek
-
+                    
             if distance <= kula.radius:
                 if kula not in nowe_kuleczki:
                     nowe_kuleczki.append(kula)

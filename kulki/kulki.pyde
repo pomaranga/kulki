@@ -75,9 +75,8 @@ def licz_wynik(wynik):
 
 
 def generuj_kulki():
-    global kulka, kuleczki, lista_kolorow, losowy_kolor
+    global kulka, kuleczki, losowy_kolor
     kuleczki = []
-    lista_kolorow = []
     liczba_kolumn = 15
     liczba_rzedow = 5
     
@@ -142,7 +141,7 @@ def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić j
                 break
 '''
 def setup():
-    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor, przypisanie_kolorow, wynik
+    global strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor, wynik
     # Natalia_A
     wynik = 0 #N
     global text_size #1N

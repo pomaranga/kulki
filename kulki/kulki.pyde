@@ -261,7 +261,9 @@ def draw():
         strzala_kulka.display()
     #sprawdz_kolizje(kulki_na_gorze, pociski)  # Sprawdzenie kolizji kulki-pociski
     
-    
+        if any(kula.y + kula.radius/2 > height - 50 for kula in kulki_na_gorze): #po przegranej następuje wyjscie z gry Klaudia_K
+             exit()
+             
         # Natalia_A - Licznik punktów
         fill(255) # kolor tekstu
         textAlign(RIGHT, BOTTOM) # pozycja wyświetlania wyniku

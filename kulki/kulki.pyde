@@ -26,11 +26,36 @@ class Start:
         rect(self.button_x, self.button_y, self.button_width, self.button_height)
         fill(255)
         textSize(24)
-        text("Start", self.button_x, self.button_y + 8 )   
+        text("Start", self.button_x, self.button_y + 8 )
+
+
+class Koniec:
+    def __init__(self):
+        self.button_width = 200
+        self.button_height = 50
+        self.button_x = width/2 - self.button_width/2 + 100
+        self.button_y = height/2 + 200
+
+    def end_screen(self):
+        background(0)
+
+        # informacja o skończonej grze
+        textSize(24)
+        text("Koniec gry!", width/2 + 60, height/2)
+
+        # przycisk "zagraj ponownie"
+        rectMode(CENTER)
+        fill(0, 255, 0)
+        rect(self.button_x, self.button_y, self.button_width, self.button_height)
+        fill(255)
+        textSize(24)
+        text("Zagraj ponownie", self.button_x + 85, self.button_y + 8)
+
 
 import random
 
 game = False
+finish = False
 
 kolory = [
         color(255, 0, 0),
@@ -144,10 +169,17 @@ class Strzala: #Konrad - dodanie strzalki
         popMatrix()
 
 def mousePressed():
-    global game, menu, strzala_kulka, nastepny_kolor, pocisk_tymczasowy
+    global game, menu, finish, end_screen, strzala_kulka, nastepny_kolor, pocisk_tymczasowy
     if game == False:
         if mouseX > (menu.button_x - menu.button_width/2) and mouseX < (menu.button_x + menu.button_width/2) and mouseY > (menu.button_y - menu.button_height/2) and mouseY < (menu.button_y + menu.button_height/2):
             game = True
+    elif finish == True:
+        if (mouseX > (end_screen.button_x - end_screen.button_width/2)
+                and mouseX < (end_screen.button_x + end_screen.button_width/2)
+                and mouseY > (end_screen.button_y - end_screen.button_height/2)
+                and mouseY < (end_screen.button_y + end_screen.button_height/2)):
+            finish = False
+            setup()
     else:
         color = strzala_kulka.color  # Pobieramy kolor z kulki na dole zeby pocisk mial ten sam kolor
         pocisk_tymczasowy = Pocisk(strzala_kulka.x, strzala_kulka.y, strzala_kulka.radius, color, mouseX, mouseY)
@@ -165,11 +197,13 @@ def sprawdz_kolizje(kuleczki, pociski): #Miłosz, ale trzeba jeszcze poprawić j
                 pociski.remove(pocisk)
                 break
 '''
+
 def setup():
-    global menu, strzala_kulka, strzala, kulki_na_gorze, nastepny_kolor, wynik
-    
+    global menu, end_screen, strzala_kulka, strzala, kulki_na_gorze, nastepny_kolor, wynik
+
     menu = Start()
-    
+    end_screen = Koniec()
+
     # Natalia_A
     wynik = 0 #N
     global text_size #1N
@@ -242,10 +276,12 @@ def dodanie_kulki(kuleczki, pociski):
     kuleczki[:] = nowe_kuleczki          '''     #dodalam ''', aby dzialalo przypisanie_kolorow
 
 def draw():
-    global game, strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
+    global game, end_screen, finish, strzala_kulka, strzalka, kulki_na_gorze, nastepny_kolor
 
     if game == False:
         menu.start_screen()
+    elif finish == True:
+        end_screen.end_screen()
     else:
         background(200)
         for kula in kulki_na_gorze:
@@ -268,7 +304,11 @@ def draw():
         fill(255) # kolor tekstu
         textAlign(RIGHT, BOTTOM) # pozycja wyświetlania wyniku
         text("Score: " + str(wynik), width, height) # wyświetlanie wyniku
-        
+
+        # jeżeli nie ma już kulek -> koniec gry
+        if len(kulki_na_gorze) == 0:
+            finish = True
+
         # Adrian - Pokazanie koloru nastepnej kulki
         fill(nastepny_kolor)
         ellipse(50, height - 50, strzala_kulka.radius, strzala_kulka.radius)

@@ -50,8 +50,10 @@ class Koniec:
         fill(255)
         textSize(24)
         text("Zagraj ponownie", self.button_x + 85, self.button_y + 8)
-
-
+        
+        #informacja o zdobytym wyniku
+        text("Twoj wynik:" +str(wynik), width, height)
+        
 import random
 
 game = False
